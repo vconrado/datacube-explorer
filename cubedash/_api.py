@@ -9,8 +9,6 @@ from . import _model
 from ._utils import as_geojson
 from .summary import ItemSort
 
-from ._model import (enable_prometheus, initialise_prometheus_register)
-
 _LOG = logging.getLogger(__name__)
 bp = Blueprint("api", __name__, url_prefix="/api")
 
@@ -90,9 +88,3 @@ def regions_geojson(
     return as_geojson(
         regions, downloadable_filename_prefix=_utils.api_path_as_filename_prefix()
     )
-
-# Note: register your default metrics after all routes have been set up.
-# Also note, that Gauge metrics registered as default will track the /metrics endpoint,
-# and this can't be disabled at the moment.
-metrics = enable_prometheus()
-initialise_prometheus_register(metrics)

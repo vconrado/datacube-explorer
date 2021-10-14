@@ -21,7 +21,6 @@ from cubedash.summary import SummaryStore, TimePeriodOverview
 from cubedash.summary._extents import RegionInfo
 from cubedash.summary._stores import ProductSummary
 
-
 try:
     from ._version import version as __version__
 except ImportError:
@@ -285,6 +284,7 @@ def enable_sentry():
             )
 
 
+@app.before_first_request
 def enable_prometheus():
     # Enable deployment specific code for Prometheus metrics
     if os.environ.get("prometheus_multiproc_dir", False):
@@ -293,21 +293,18 @@ def enable_prometheus():
         )
 
         metrics = GunicornInternalPrometheusMetrics(app)
-        _LOG.info(f"Prometheus metrics enabled : {metrics}")
-        return metrics
-
-def initialise_prometheus_register(metrics):
-    # Register routes with Prometheus - call after all routes set up.
-    if os.environ.get("prometheus_multiproc_dir", False):
         metrics.register_default(
             metrics.summary(
-                'flask_explorer_request_full_url', 'Request summary by request url',
+                "flask_explorer_request_full_url",
+                "Request summary by request url",
                 labels={
-                    'query_request': lambda: flask.request.args.get('request'),
-                    'query_url': lambda: flask.request.full_path
-                }
+                    "query_request": lambda: flask.request.args.get("request"),
+                    "query_url": lambda: flask.request.full_path,
+                },
             )
         )
+        _LOG.info(f"Prometheus metrics enabled : {metrics}")
+
 
 @app.before_first_request
 def check_schema_compatibility():

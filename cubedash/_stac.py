@@ -550,6 +550,11 @@ def collection_items(collection: str):
         request_args=request.args,
         product_names=[collection],
     )
+    for feature in feature_collection['features']:
+        del feature['properties']['mq:local_scene']
+        for asset in feature['assets']:
+            feature['assets'][asset]['href'] = feature['assets'][asset]['href'].replace("file:///data/repository", "http://localhost:8080")
+
 
     # Maybe we shouldn't include total count, as it prevents some future optimisation?
     if "numberMatched" not in feature_collection:

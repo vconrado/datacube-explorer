@@ -85,3 +85,7 @@ def cli(
     if debug_mode:
         app.debug = True
     run_simple(hostname, port, app, use_reloader=debug_mode, processes=workers)
+
+
+if __name__ == '__main__':
+    cli(["-p", "8090"])

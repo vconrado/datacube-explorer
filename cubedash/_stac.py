@@ -550,10 +550,12 @@ def collection_items(collection: str):
         request_args=request.args,
         product_names=[collection],
     )
-    for feature in feature_collection['features']:
-        for asset in feature['assets']:
-            feature['assets'][asset]['href'] = feature['assets'][asset]['href'].replace("file:///data/repository", "http://http://161.24.238.140:9001")
-
+    import os
+    base_path = os.getenv('KEY_THAT_MIGHT_EXIST', None)
+    if base_path:
+        for feature in feature_collection['features']:
+            for asset in feature['assets']:
+                feature['assets'][asset]['href'] = feature['assets'][asset]['href'].replace("file:///data/repository", base_path)
 
     # Maybe we shouldn't include total count, as it prevents some future optimisation?
     if "numberMatched" not in feature_collection:

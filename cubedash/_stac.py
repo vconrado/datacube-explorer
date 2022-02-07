@@ -551,7 +551,7 @@ def collection_items(collection: str):
         product_names=[collection],
     )
     import os
-    base_path = os.getenv('KEY_THAT_MIGHT_EXIST', None)
+    base_path = os.getenv('SERVER_BASE_URL', None)
     if base_path:
         for feature in feature_collection['features']:
             for asset in feature['assets']:

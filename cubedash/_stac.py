@@ -555,10 +555,11 @@ def collection_items(collection: str):
     
     ########################################################################
     base_path = os.getenv('SERVER_BASE_URL', None)
-    if base_path:
+    repo_path = os.getenv('REPOSITORY_PATH', None)
+    if base_path and repo_path:
         for feature in feature_collection['features']:
             for asset in feature['assets']:
-                feature['assets'][asset]['href'] = feature['assets'][asset]['href'].replace("file:///data/repository", base_path)
+                feature['assets'][asset]['href'] = feature['assets'][asset]['href'].replace(f"file://{repo_path}", base_path)
     ########################################################################
 
     # Maybe we shouldn't include total count, as it prevents some future optimisation?

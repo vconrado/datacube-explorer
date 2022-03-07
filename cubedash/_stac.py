@@ -23,6 +23,7 @@ from cubedash.summary._stores import DatasetItem
 
 from . import _model, _utils
 from .summary import ItemSort
+import os
 
 _LOG = logging.getLogger(__name__)
 bp = flask.Blueprint("stac", __name__, url_prefix="/stac")
@@ -551,12 +552,14 @@ def collection_items(collection: str):
         request_args=request.args,
         product_names=[collection],
     )
-    import os
+    
+    ########################################################################
     base_path = os.getenv('SERVER_BASE_URL', None)
     if base_path:
         for feature in feature_collection['features']:
             for asset in feature['assets']:
                 feature['assets'][asset]['href'] = feature['assets'][asset]['href'].replace("file:///data/repository", base_path)
+    ########################################################################
 
     # Maybe we shouldn't include total count, as it prevents some future optimisation?
     if "numberMatched" not in feature_collection:

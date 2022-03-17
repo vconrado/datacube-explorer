@@ -105,9 +105,9 @@ def cli(
     # Fixing url when service behind reverse proxy
     # Source: https://blog.macuyiko.com/post/2016/fixing-flask-url_for-when-behind-mod_proxy.html
     import os
-    script_name = os.getenv("PROXY_PATH", None)
-    if script_name:
-        app.wsgi_app = ReverseProxied(app.wsgi_app, script_name=f"/{script_name}")
+    script_name = os.getenv("PROXY_PATH", "/")
+    if script_name != "/":
+        app.wsgi_app = ReverseProxied(app.wsgi_app, script_name=script_name)
 
 
     init_logging(

@@ -74,7 +74,9 @@ setup(
         "cachetools",
         "click",
         "datacube>=1.8",
-        "eodatasets3>=0.23.1",
+        # "eodatasets3>=0.23.1", https://github.com/vconrado/eo-datasets.git
+        #'some-pkg @ git+ssh://git@github.com/someorgname/pkg-repo-name@v1.1#egg=some-pkg',
+        "eodatasets3@git+https://git@github.com/vconrado/eo-datasets#egg=eodatasets3",
         "fiona",
         "flask",
         "Flask-Caching",

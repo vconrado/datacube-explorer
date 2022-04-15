@@ -521,8 +521,10 @@ def _default_crs(dt: DatasetType) -> Optional[str]:
     storage = dt.definition.get("storage")
     if not storage:
         return None
-
-    return storage.get("crs")
+    crs = storage.get("crs")
+    if not crs.lower().startswith("epsg"):
+        crs = "EPSG:10001"
+    return crs
 
 
 def _dataset_creation_expression(md: MetadataType) -> ClauseElement:
